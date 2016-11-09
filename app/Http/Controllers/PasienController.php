@@ -111,17 +111,17 @@ class PasienController extends Controller
         return json_encode($res);
     }
 
-    public function historyApi() {     
+    public function historyApi($token) {     
         if ($user = User::where('remember_token',$token)->first()) {
             if($user->role_id == 2) {
-                $histories = History::where('user_id',Auth::user()->id)->orderBy('id','DESC')->get();
+                $histories = History::where('user_id',$user->id)->orderBy('id','DESC')->get();
                 $history_arr = array();
                     foreach ($histories as $history) {
                         $temp = array(
                             'id'                => $history->id,
                             'illness'           => $history->illness,
                             'year'              => $history->year,
-                            'doctor_id'         => $history->doctor->nama,
+                            'doctor_id'         => $history->dokter->nama,
                             'description'       => $history->description
                         );
                         array_push($history_arr, $temp);

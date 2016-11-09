@@ -75,7 +75,7 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('api/pasien','HomeController@pasienApi');
 	Route::get('api/dokter','HomeController@dokterApi');
 	Route::get('api/apotek','HomeController@apotekApi');*/
-	Route::get('api/sendToken/{token}/{token_fcm}','HomeController@sendToken');
+	Route::post('api/sendToken/{token}','HomeController@sendToken');
 	/*DOKTER*/
 		/*RESEP*/ /*SELESAI*/
 			Route::get('api/dokter/resep/{token}','DokterController@homeApi');

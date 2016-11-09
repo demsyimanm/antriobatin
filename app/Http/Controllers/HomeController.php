@@ -269,7 +269,7 @@ class HomeController extends Controller
                 ));
 
                 $user = User::where('username',$data['username'])->first();
-                $img = DNS2D::getBarcodePNG( $data['username']+$data['nip']+"_="+$user->id,"QRCODE");
+                $img = DNS2D::getBarcodePNG( $data['username']+$data['nip']."_=".$user->id,"QRCODE");
                 $data = 'data:image/png;base64,'.$img;
                 $update = User::where('id',$user->id)->update(array(
                     'barcode'   => $data
@@ -306,12 +306,12 @@ class HomeController extends Controller
         }
     }
 
-    public function sendToken($token,$token_fcm){
-        if (Request::isMethod('get')) {
+    public function sendToken($token){
+        if (Request::isMethod('post')) {
             $data = Input::all();
             $user = User::where('remember_token',$token)->first();
             $update = User::where('id',$user->id)->update(array(
-                'token_fcm'      => $token_fcm, 
+                'token_fcm'      => $data['token_fcm'], 
             ));
             if($update)
             {
