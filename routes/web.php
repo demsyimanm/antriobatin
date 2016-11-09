@@ -21,8 +21,8 @@ Route::post('login','HomeController@login');
 Route::post('register','HomeController@register');
 
 /*API*/
-Route::post('api/login','HomeController@login');
-Route::post('api/register','HomeController@register');
+Route::post('api/login','HomeController@loginApi');
+Route::post('api/register','HomeController@registerApi');
 
 Route::group(['middleware' => 'auth'], function()
 {

@@ -995,7 +995,7 @@ class DokterController extends Controller
 		if ($user = User::where('remember_token',$token)->first())
 		{
 			if($user->role_id == 3) {
-				if ($delete = History::where('id', $id)->delete();) {
+				if ($delete = History::where('id', $id)->delete()) {
 					$res = array(
 		                'status'        => 'deleted',
 		            );
