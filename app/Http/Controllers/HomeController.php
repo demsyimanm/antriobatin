@@ -81,40 +81,40 @@ class HomeController extends Controller
                 if (Auth::attempt($credentials,true)){
                     if(Auth::user()->role_id == 1) {
                         $res = array(
-                                'user_id'   => Auth::user()->id,
+                                'user_id'   => (string)Auth::user()->id,
                                 'status'    => 'success',
                                 'token'     => Auth::user()->remember_token,
-                                'role'      => 1,
+                                'role'      => '1',
                                 'barcode'   => Auth::user()->barcode
                                 );
                         return json_encode($res); 
                     } 
                     else if (Auth::user()->role_id == 2) {
                         $res = array(
-                                'user_id'   => Auth::user()->id,
+                                'user_id'   => (string)Auth::user()->id,
                                 'status'    => 'success',
                                 'token'     => Auth::user()->remember_token,
-                                'role'      => 2,
+                                'role'      => '2',
                                 'barcode'   => Auth::user()->barcode
                                 );
                         return json_encode($res); 
                     } 
                     else if (Auth::user()->role_id == 3) {
                         $res = array(
-                                'user_id'   => Auth::user()->id,
+                                'user_id'   => (string)Auth::user()->id,
                                 'status'    => 'success',
                                 'token'     => Auth::user()->remember_token,
-                                'role'      => 3,
+                                'role'      => '3',
                                 'barcode'   => Auth::user()->barcode
                                 );
                         return json_encode($res); 
                     }
                     else if (Auth::user()->role_id == 4) {
                         $res = array(
-                                'user_id'   => Auth::user()->id,
+                                'user_id'   => (string)Auth::user()->id,
                                 'status'    => 'success',
                                 'token'     => Auth::user()->remember_token,
-                                'role'      => 4,
+                                'role'      => '4',
                                 'barcode'   => Auth::user()->barcode
                                 );
                         return json_encode($res); 

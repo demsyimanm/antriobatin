@@ -42,7 +42,7 @@ class PasienController extends Controller
                 $transaction_arr = array();
                 foreach ($transactions as $trans) {
                     $temp = array(
-                        'id'            => $trans->id,
+                        'id'            => (string)$trans->id,
                         'doctor'        => $trans->dokter->name,
                         'drugstore'     => $trans->apotek->name,
                         'photo'         => $trans->photo,
@@ -81,7 +81,7 @@ class PasienController extends Controller
                 $transaction_arr = array();
                 foreach ($transactions as $trans) {
                     $temp = array(
-                        'id'            => $trans->id,
+                        'id'            => (string)$trans->id,
                         'doctor'        => $trans->dokter->name,
                         'drugstore'     => $trans->apotek->name,
                         'photo'         => $trans->photo,
@@ -118,10 +118,10 @@ class PasienController extends Controller
                 $history_arr = array();
                     foreach ($histories as $history) {
                         $temp = array(
-                            'id'                => $history->id,
+                            'id'                => (string)$history->id,
                             'illness'           => $history->illness,
                             'year'              => $history->year,
-                            'doctor_id'         => $history->dokter->nama,
+                            'doctor_id'         => $history->dokter->name,
                             'description'       => $history->description
                         );
                         array_push($history_arr, $temp);

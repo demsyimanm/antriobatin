@@ -741,7 +741,7 @@ class DokterController extends Controller
 		                $transaction_arr = array();
 		                foreach ($drugstores as $drug) {
 		                    $temp = array(
-		                        'id'            => $drug->id,
+		                        'id'            => (string)$drug->id,
 		                        'username'      => $drug->username,
 		                        'name'     		=> $drug->name,
 		                        'telp'         	=> $drug->telp,
@@ -751,7 +751,7 @@ class DokterController extends Controller
 		                    array_push($drugstores_arr, $temp);
 		                }
 		                $temp2 = array(
-	                        'id'            => $trans->id,
+	                        'id'            => (string)$trans->id,
 	                        'doctor'        => $trans->dokter->name,
 	                        'drugstore'     => $trans->apotek->name,
 	                        'photo'         => $trans->photo,
@@ -840,7 +840,7 @@ class DokterController extends Controller
 		        	if ($history = History::find($id)) {
 		        		$history_arr = array();
 	                    $temp = array(
-	                        'id'            	=> $history->id,
+	                        'id'            	=> (string)$history->id,
 	                        'illness'        	=> $history->illness,
 	                        'year'    			=> $history->year,
 	                        'doctor_id'         => $history->doctor->nama,

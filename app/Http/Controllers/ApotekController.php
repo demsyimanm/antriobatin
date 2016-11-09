@@ -26,7 +26,7 @@ class ApotekController extends Controller
 	            $transaction_arr = array();
                 foreach ($transactions as $trans) {
                     $temp = array(
-                        'id'            => $trans->id,
+                        'id'            => (string)$trans->id,
                         'doctor'        => $trans->dokter->name,
                         'drugstore'     => $trans->apotek->name,
                         'photo'         => $trans->photo,
@@ -152,7 +152,7 @@ class ApotekController extends Controller
 	            $transaction_arr = array();
                 foreach ($transactions as $trans) {
                     $temp = array(
-                        'id'            => $trans->id,
+                        'id'            => (string)$trans->id,
                         'doctor'        => $trans->dokter->name,
                         'drugstore'     => $trans->apotek->name,
                         'photo'         => $trans->photo,
@@ -248,7 +248,7 @@ class ApotekController extends Controller
 	            $transaction_arr = array();
                 foreach ($transactions as $trans) {
                     $temp = array(
-                        'id'            => $trans->id,
+                        'id'            => (string)$trans->id,
                         'doctor'        => $trans->dokter->name,
                         'drugstore'     => $trans->apotek->name,
                         'photo'         => $trans->photo,
@@ -343,7 +343,7 @@ class ApotekController extends Controller
 	            $transaction_arr = array();
                 foreach ($transactions as $trans) {
                     $temp = array(
-                        'id'            => $trans->id,
+                        'id'            => (string)$trans->id,
                         'doctor'        => $trans->dokter->name,
                         'drugstore'     => $trans->apotek->name,
                         'photo'         => $trans->photo,
