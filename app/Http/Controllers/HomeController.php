@@ -5,6 +5,7 @@ use Request;
 use Input;
 use Session;
 use App\User;
+use DNS2D;
 class HomeController extends Controller
 {
     protected $data = array();
@@ -65,6 +66,7 @@ class HomeController extends Controller
                 	return redirect('apotek');
                 }
             }
+            
             return view('login');
         }
     }
@@ -219,11 +221,22 @@ class HomeController extends Controller
                     'password'  => bcrypt($data['password']), 
                     'telp'      => $data['telp'], 
                     'nip'       => $data['nip'],
-                    'barcode'   => '',
                     'address'   => $data['address'],
                     'role_id'   => $data['role']
                 ));
                 Session::flash('status','register-success');
+                $user = User::where('username',$data['username'])->first();
+                $img = DNS2D::getBarcodePNG( $data['username']+$data['nip']+"_="+$user->id,"QRCODE");
+                $data = 'data:image/png;base64,'.$img;
+                $update = User::where('id',$user->id)->update(array(
+                    'barcode'   => $data
+                ));
+
+                list($type, $data) = explode(';', $data);
+                list(, $data)      = explode(',', $data);
+                $data = base64_decode($data);
+
+                file_put_contents('qrcodeUser/'.$user->id.'.png', $data);
             }
             else
             {
@@ -245,11 +258,23 @@ class HomeController extends Controller
                     'password'  => bcrypt($data['password']), 
                     'telp'      => $data['telp'], 
                     'nip'       => $data['nip'],
-                    'barcode'   => '',
                     'address'   => $data['address'],
                     'role_id'   => $data['role']
                 ));
-                if($create)
+
+                $user = User::where('username',$data['username'])->first();
+                $img = DNS2D::getBarcodePNG( $data['username']+$data['nip']+"_="+$user->id,"QRCODE");
+                $data = 'data:image/png;base64,'.$img;
+                $update = User::where('id',$user->id)->update(array(
+                    'barcode'   => $data
+                ));
+
+                list($type, $data) = explode(';', $data);
+                list(, $data)      = explode(',', $data);
+                $data = base64_decode($data);
+
+                file_put_contents('qrcodeUser/'.$user->id.'.png', $data);
+                if($create && $update)
                 {
                     $res = array(
                             'status'    => 'register-success',
@@ -271,6 +296,32 @@ class HomeController extends Controller
                         );
                 return json_encode($res);
             }
+            return redirect('/');
+        }
+    }
+
+    public function sendToken($token){
+        if (Request::isMethod('post')) {
+            $data = Input::all();
+            $user = User::where('remember_token',$token)->first();
+            $update = User::where('id',$user->id)->update(array(
+                'token_fcm'      => $data['token_fcm'], 
+            ));
+            if($update)
+            {
+                $res = array(
+                        'status'    => 'send-success',
+                        );
+                return json_encode($res);
+            }
+            else
+            {
+                $res = array(
+                        'status'    => 'register-failed',
+                        );
+                return json_encode($res);   
+            }
+
             return redirect('/');
         }
     }

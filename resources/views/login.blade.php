@@ -73,6 +73,7 @@
     <h2 class="ui teal image header">
       <img src="{{URL::to('assets/image/logo.png')}}" style="width:80%" class="image">
       <div class="content" style="color:#b4312f ">
+      
         Log-in to your account
       </div>
     </h2>
