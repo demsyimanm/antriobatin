@@ -84,7 +84,8 @@ class HomeController extends Controller
                                 'user_id'   => Auth::user()->id,
                                 'status'    => 'success',
                                 'token'     => Auth::user()->remember_token,
-                                'role'      => 1
+                                'role'      => 1,
+                                'barcode'   => Auth::user()->barcode
                                 );
                         return json_encode($res); 
                     } 
@@ -93,7 +94,8 @@ class HomeController extends Controller
                                 'user_id'   => Auth::user()->id,
                                 'status'    => 'success',
                                 'token'     => Auth::user()->remember_token,
-                                'role'      => 2
+                                'role'      => 2,
+                                'barcode'   => Auth::user()->barcode
                                 );
                         return json_encode($res); 
                     } 
@@ -102,7 +104,8 @@ class HomeController extends Controller
                                 'user_id'   => Auth::user()->id,
                                 'status'    => 'success',
                                 'token'     => Auth::user()->remember_token,
-                                'role'      => 3
+                                'role'      => 3,
+                                'barcode'   => Auth::user()->barcode
                                 );
                         return json_encode($res); 
                     }
@@ -111,7 +114,8 @@ class HomeController extends Controller
                                 'user_id'   => Auth::user()->id,
                                 'status'    => 'success',
                                 'token'     => Auth::user()->remember_token,
-                                'role'      => 4
+                                'role'      => 4,
+                                'barcode'   => Auth::user()->barcode
                                 );
                         return json_encode($res); 
                     }
@@ -121,7 +125,8 @@ class HomeController extends Controller
                         'user_id'   => 'null',
                         'status'    => 'failed',
                         'token'     => 'null',
-                        'role'      => 'null'
+                        'role'      => 'null',
+                        'barcode'   => 'null'
                         );
                 return json_encode($res); 
             }
@@ -131,7 +136,8 @@ class HomeController extends Controller
                         'user_id'   => 'null',
                         'status'    => 'not-exist',
                         'token'     => 'null',
-                        'role'      => 'null'
+                        'role'      => 'null',
+                        'barcode'   => 'null'
                         );
                 return json_encode($res); 
             }
@@ -300,12 +306,12 @@ class HomeController extends Controller
         }
     }
 
-    public function sendToken($token){
-        if (Request::isMethod('post')) {
+    public function sendToken($token,$token_fcm){
+        if (Request::isMethod('get')) {
             $data = Input::all();
             $user = User::where('remember_token',$token)->first();
             $update = User::where('id',$user->id)->update(array(
-                'token_fcm'      => $data['token_fcm'], 
+                'token_fcm'      => $token_fcm, 
             ));
             if($update)
             {
