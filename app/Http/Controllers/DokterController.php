@@ -301,9 +301,9 @@ class DokterController extends Controller
 					}
 				    $id = Transaction::insertGetId(array(
 						'user_id' 		=> $data['user'], 
-						'doctor_id'		=> $data['doctor'], 
+						'doctor_id'		=> $user->id, 
 						'drugstore_id' 	=> $data['drugstore'],
-						'message'		=>$data['message'],
+						'message'		=> $data['message'],
 						'status_id'		=> 1
 					));
 					$target_dir = "resep/";

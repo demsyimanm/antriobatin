@@ -96,8 +96,10 @@ Route::group(['middleware' => 'auth'], function()
 	/*PASIEN*/ /*SELESAI*/
 		/*RESEP*/
 			Route::get('api/pasien/resep/{token}','PasienController@homeApi');
+			Route::get('api/pasien/resep/{id}/{token}','PasienController@homeApiById');
 			Route::get('api/pasien/resep/finished/{token}','PasienController@finishedApi');
 			Route::get('api/pasien/history/{token}','PasienController@historyApi');
+			Route::get('api/pasien/history/{id}/{token}','PasienController@historyByIdApi');
 
 	/*APOTEK*/ /*SELESAI*/
 		/*RESEP*/
