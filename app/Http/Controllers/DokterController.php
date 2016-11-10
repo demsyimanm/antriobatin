@@ -267,109 +267,16 @@ class DokterController extends Controller
 	        	{
 	        		$data = Input::all();
 	        		$uploadOk = 1;
-	                $target_dir = "resep/";
-	                $target_file = $target_dir . basename($_FILES["photo"]["name"]);
-					$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
-				    $check = getimagesize($_FILES["photo"]["tmp_name"]);
-				    if($check !== false) 
-				    {
-				        echo "File is an image - " . $check["mime"] . ".";
-				        $uploadOk = 1;
-				    } 
-				    else 
-				    {
-				    	$uploadOk = 0;
-	                	$res = array(
-				                'status'        => 'not-image'
-				            );
-				        return json_encode($res);
-				    }
-				    if ($_FILES["photo"]["size"] > 10000000) {
-					    $uploadOk = 0;
-	                	$res = array(
-				                'status'        => 'too-large'
-				            );
-				        return json_encode($res);
-					}
-				    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" ) 
-				    {
-				    	$uploadOk = 0;
-	                	$res = array(
-				                'status'        => 'wrong-format'
-				            );
-				        return json_encode($res);
-					}
 				    $id = Transaction::insertGetId(array(
 						'user_id' 		=> $data['user'], 
 						'doctor_id'		=> $user->id, 
 						'drugstore_id' 	=> $data['drugstore'],
 						'message'		=> $data['message'],
-						'status_id'		=> 1
-					));
-					$target_dir = "resep/";
-					$temp = explode(".", $_FILES["photo"]["name"]);
-					$_FILES["photo"]["name"] =  $temp[0].'_'.$id.'.' . end($temp);
-					$target_file = $target_dir . basename($_FILES["photo"]["name"]);
-					$uploadOk = 1;
-					$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
-				    $check = getimagesize($_FILES["photo"]["tmp_name"]);
-				    if($check !== false) 
-				    {
-				        echo "File is an image - " . $check["mime"] . ".";
-				        $uploadOk = 1;
-				    } 
-				    else 
-				    {
-				    	$uploadOk = 0;
-	                	$res = array(
-				                'status'        => 'not-image'
-				            );
-				        return json_encode($res);
-				    }
-				    if ($_FILES["photo"]["size"] > 1000000) {
-					    echo "Sorry, your file is too large.";
-					    $uploadOk = 0;
-	                	$res = array(
-				                'status'        => 'too-large'
-				            );
-				        return json_encode($res);
-					}
-				    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" ) 
-				    {
-				    	$uploadOk = 0;
-	                	$res = array(
-				                'status'        => 'wrong-format'
-				            );
-				        return json_encode($res);
-					}
-					if ($uploadOk == 0) 
-					{
-					   	Session::flash('status','failed-upload');
-	                	$res = array(
-				                'status'        => 'failed-upload'
-				            );
-				        return json_encode($res);
-					} 
-					else 
-					{
-					    if (move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file)) 
-					    {
-					        echo "The file ". basename( $_FILES["photo"]["name"]). " has been uploaded.";
-					    } 
-					    else 
-					    {
-		                	$res = array(
-					                'status'        => 'failed-upload'
-					            );
-					        return json_encode($res);
-					    }
-					}
-
-					$update = Transaction::where('id',$id)->update(array(
-						'photo' 		=> 'resep/'. $_FILES["photo"]["name"],
+						'status_id'		=> 1,
+						'photo' 		=> $data['photo']
 
 					));
-					if($id > 0 and $update != 0 && $uploadOk != 0)
+					if($id > 0)
 					{
 						$res = array(
 				                'status'        => 'success'
@@ -386,13 +293,11 @@ class DokterController extends Controller
 	        	}
 	        	$res = array(
 	                'status'        => 'failed',
-	                'transactions'  => 'null'
 	            );
 	        	return json_encode($res);
         	}
         	$res = array(
 	                'status'        => 'failed',
-	                'transactions'  => 'null'
 	            );
 	        return json_encode($res);
         }
