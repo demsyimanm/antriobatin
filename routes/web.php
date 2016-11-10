@@ -104,12 +104,29 @@ Route::group(['middleware' => 'auth'], function()
 	/*APOTEK*/ /*SELESAI*/
 		/*RESEP*/
 			Route::get('api/apotek/resep/{token}','ApotekController@homeApi');
+			Route::get('webview/apotek/resep/{token}','ApotekController@homeApiWebView');
+			
 			Route::get('api/apotek/resep/terima/{id}/{token}','ApotekController@terimaApi');
+			Route::get('webview/apotek/resep/terima/{id}/{token}','ApotekController@terimaApiWebView');
+
 			Route::post('api/apotek/resep/terima/{id}/{token}','ApotekController@terimaApi');
+			Route::post('webview/apotek/resep/terima/{id}/{token}','ApotekController@terimaApiWebView');
+
 			Route::get('api/apotek/racik/{token}','ApotekController@racikApi');
+			Route::get('webview/apotek/racik/{token}','ApotekController@racikApiWebView');
+
 			Route::get('api/apotek/resep/selesai/{id}/{token}','ApotekController@selesaiApi');
+			Route::get('webview/apotek/resep/selesai/{id}/{token}','ApotekController@selesaiApiWebView');
+
 			Route::get('api/apotek/selesai/{token}','ApotekController@bisaDiambilApi');
+			Route::get('webview/apotek/selesai/{token}','ApotekController@bisaDiambilApiWebView');
+
 			Route::get('api/apotek/resep/diambil/{id}/{token}','ApotekController@sudahDiambilApi');
+			Route::get('webview/apotek/resep/diambil/{id}/{token}','ApotekController@sudahDiambilApiWebView');
+			
 			Route::get('api/apotek/taken/{token}','ApotekController@takenListApi');
+			Route::get('webview/apotek/taken/{token}','ApotekController@takenListApiWebView');
 
 	Route::get('api/logout/{token}','HomeController@logoutApi');
+
+	Route::get('coba','DokterController@cek');	

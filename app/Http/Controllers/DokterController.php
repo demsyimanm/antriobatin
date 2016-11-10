@@ -11,6 +11,36 @@ use App\History;
 
 class DokterController extends Controller
 {
+	public function cek()
+	{
+		$message = "opo iku";
+		$data = array
+        (
+            'status' 	=> $message,
+            'title' 	=> "ALERT!!!",
+            'body' 		=> 'Check & Reply',
+        );
+        $json=array(
+            'data' 	=> $data,
+            'to' 	=> "diU9qjMvV3U:APA91bGspbWWgmMesqGcwkiRsvTDVwnP-a6pX2Gou0zx4G1ZmKHUP7QB2xaLgmx8iSvJtH7MZEN2M9sYriMjxPSAFiEfyCcVg8awME-7117BaElprneix86_x7xU2b1iYWrgd8tc9_1r",
+            'priority' => 'high',
+            'time_to_live' => 86400,
+        );
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: '.strlen(json_encode($json)),
+            'Authorization:key=AIzaSyB3H6K1nz3ZqyxNrNMLIllcoh1c23PO2fA'
+        ));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($json));
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $output = curl_exec($ch);
+        curl_close($ch);
+        echo $output;
+	}
     public function home() {     
         if(Auth::check() && Auth::user()->role_id == 3) {
         	$transactions = Transaction::where('doctor_id',Auth::user()->id)->orderBy('id','DESC')->get();

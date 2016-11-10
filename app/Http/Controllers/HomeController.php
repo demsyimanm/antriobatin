@@ -232,7 +232,7 @@ class HomeController extends Controller
                 ));
                 Session::flash('status','register-success');
                 $user = User::where('username',$data['username'])->first();
-                $img = DNS2D::getBarcodePNG( $data['username']+$data['nip']+"_="+$user->id,"QRCODE");
+                $img = DNS2D::getBarcodePNG( $data['username'].$data['nip']."_=".$user->id,"QRCODE");
                 $data = 'data:image/png;base64,'.$img;
                 $update = User::where('id',$user->id)->update(array(
                     'barcode'   => $data
@@ -269,7 +269,7 @@ class HomeController extends Controller
                 ));
 
                 $user = User::where('username',$data['username'])->first();
-                $img = DNS2D::getBarcodePNG( $data['username']+$data['nip']."_=".$user->id,"QRCODE");
+                $img = DNS2D::getBarcodePNG( $data['username'].$data['nip']."_=".$user->id,"QRCODE");
                 $data = 'data:image/png;base64,'.$img;
                 $update = User::where('id',$user->id)->update(array(
                     'barcode'   => $data

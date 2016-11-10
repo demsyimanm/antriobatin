@@ -56,6 +56,18 @@ class ApotekController extends Controller
         return json_encode($res);
     }
 
+    public function homeApiWebView($token) 
+    {     
+        if ($user = User::where('remember_token',$token)->first()) 
+        {
+            if($user->role_id == 4) 
+            {
+                $transactions = Transaction::where('drugstore_id',$user->id)->where('status_id','=','1')->orderBy('id','DESC')->get();
+                return view('apotek.resep.masukWebView',compact('transactions'));
+            }
+        }
+    }
+
     public function terima($id) {     
         if(Auth::check() && Auth::user()->role_id == 4) {
         	if(Request::isMethod('get'))
@@ -78,6 +90,32 @@ class ApotekController extends Controller
         	}
         }
         return redirect('/');
+    }
+
+    public function terimaApiWebview($id,$token) {     
+        if ($user = User::where('remember_token',$token)->first()) {
+            if($user->role_id == 4) {
+                if(Request::isMethod('get'))
+                {
+                    $transaction = Transaction::find($id);
+                    /*$id = Transaction::where('id',$id)->update(array(
+                        'status_id'     => 2
+                    ));*/
+                    return view('apotek.resep.terimaWebView',compact('transaction'));
+                }
+                else
+                {
+                    $data = Input::all();
+                    $id = Transaction::where('id',$id)->update(array(
+                        'cost'          => $data['cost'],
+                        'duration'      => $data['duration'],
+                        'status_id'     => 3
+                    ));
+                    return redirect('webview/apotek/resep/'.$token);
+                }
+            }
+        }
+        //return redirect('/');
     }
 
     public function terimaApi($id,$token) {
@@ -137,18 +175,26 @@ class ApotekController extends Controller
         return json_encode($res);
     }
 
+    public function racikApiWebView($token) { 
+        if ($user = User::where('remember_token',$token)->first()) {
+                if($user->role_id == 4) {
+                	$transactions = Transaction::where('drugstore_id',$user->id)->where('status_id','=','3')->orderBy('updated_at','DESC')->get();
+                    return view('apotek.resep.racikWebView',compact('transactions'));
+                }
+            }    
+    }
+
     public function racik() {     
         if(Auth::check() && Auth::user()->role_id == 4) {
-        	$transactions = Transaction::where('drugstore_id',Auth::user()->id)->where('status_id','=','3')->orderBy('id','DESC')->get();
+            $transactions = Transaction::where('drugstore_id',Auth::user()->id)->where('status_id','=','3')->orderBy('updated_at','DESC')->get();
             return view('apotek.resep.racik',compact('transactions'));
         }
-        return redirect('/');
     }
 
     public function racikApi($token) { 
     	if ($user = User::where('remember_token',$token)->first()) {
 	        if($user->role_id == 4) {
-	        	$transactions = Transaction::where('drugstore_id',$user->id)->where('status_id','=','3')->orderBy('id','DESC')->get();
+	        	$transactions = Transaction::where('drugstore_id',$user->id)->where('status_id','=','3')->orderBy('updated_at','DESC')->get();
 	            $transaction_arr = array();
                 foreach ($transactions as $trans) {
                     $temp = array(
@@ -197,6 +243,22 @@ class ApotekController extends Controller
         return redirect('/');
     }
 
+    public function selesaiApiWebView($id,$token) {     
+        if ($user = User::where('remember_token',$token)->first()) {
+            if($user->role_id == 4) {
+                if(Request::isMethod('get'))
+                {
+                    $transaction = Transaction::find($id);
+                    $id = Transaction::where('id',$id)->update(array(
+                        'status_id'     => 4
+                    ));
+                    return redirect('webview/apotek/racik/'.$token);
+                }
+            }
+        }   
+    }
+
+
     public function selesaiApi($id,$token) { 
     	if ($user = User::where('remember_token',$token)->first()) {
 	        if($user->role_id == 4) {
@@ -235,16 +297,26 @@ class ApotekController extends Controller
 
     public function bisaDiambil() {     
         if(Auth::check() && Auth::user()->role_id == 4) {
-        	$transactions = Transaction::where('drugstore_id',Auth::user()->id)->where('status_id','=','4')->orderBy('id','DESC')->get();
+        	$transactions = Transaction::where('drugstore_id',Auth::user()->id)->where('status_id','=','4')->orderBy('updated_at','DESC')->get();
             return view('apotek.resep.selesai',compact('transactions'));
         }
         return redirect('/');
     }
 
+    public function bisaDiambilApiWebView($token) {  
+        if ($user = User::where('remember_token',$token)->first())   
+        {
+            if($user->role_id == 4) {
+                $transactions = Transaction::where('drugstore_id',$user->id)->where('status_id','=','4')->orderBy('updated_at','DESC')->get();
+                return view('apotek.resep.selesaiWebView',compact('transactions'));
+            }
+        }
+    }
+
     public function bisaDiambilApi($token) {     
     	if ($user = User::where('remember_token',$token)->first()) {
 	        if($user->role_id == 4) {
-	        	$transactions = Transaction::where('drugstore_id',$user->id)->where('status_id','=','4')->orderBy('id','DESC')->get();
+	        	$transactions = Transaction::where('drugstore_id',$user->id)->where('status_id','=','4')->orderBy('updated_at','DESC')->get();
 	            $transaction_arr = array();
                 foreach ($transactions as $trans) {
                     $temp = array(
@@ -292,6 +364,22 @@ class ApotekController extends Controller
         return redirect('/');
     }
 
+    public function sudahDiambilApiWebView($id,$token) {
+        if ($user = User::where('remember_token',$token)->first())
+        {
+            if($user->role_id == 4) {
+                if(Request::isMethod('get'))
+                {
+                    $transaction = Transaction::find($id);
+                    $id = Transaction::where('id',$id)->update(array(
+                        'status_id'     => 5
+                    ));
+                    return redirect('webview/apotek/selesai/'.$token);
+                }
+            }
+        }     
+    }
+
     public function sudahDiambilApi($id,$token) {    
     	if ($user = User::where('remember_token',$token)->first()) {
 	        if($user->role_id == 4) {
@@ -330,16 +418,26 @@ class ApotekController extends Controller
 
     public function takenList() {     
         if(Auth::check() && Auth::user()->role_id == 4) {
-        	$transactions = Transaction::where('drugstore_id',Auth::user()->id)->where('status_id','=','5')->orderBy('id','DESC')->get();
+        	$transactions = Transaction::where('drugstore_id',Auth::user()->id)->where('status_id','=','5')->orderBy('updated_at','DESC')->get();
             return view('apotek.resep.taken',compact('transactions'));
         }
         return redirect('/');
     }
 
+    public function takenListApiWebView($token) {   
+        if ($user = User::where('remember_token',$token)->first())
+        {   
+            if($user->role_id == 4) {
+                $transactions = Transaction::where('drugstore_id',$user->id)->where('status_id','=','5')->orderBy('updated_at','DESC')->get();
+                return view('apotek.resep.takenWebView',compact('transactions'));
+            }
+        }
+    }
+
     public function takenListApi($token) {  
     	if ($user = User::where('remember_token',$token)->first()) {
 	        if($user->role_id == 4) {
-	        	$transactions = Transaction::where('drugstore_id',$User->id)->where('status_id','=','5')->orderBy('id','DESC')->get();
+	        	$transactions = Transaction::where('drugstore_id',$User->id)->where('status_id','=','5')->orderBy('updated_at','DESC')->get();
 	            $transaction_arr = array();
                 foreach ($transactions as $trans) {
                     $temp = array(
