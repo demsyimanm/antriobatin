@@ -32,7 +32,7 @@ class DokterController extends Controller
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             'Content-Type: application/json',
             'Content-Length: '.strlen(json_encode($json)),
-            'Authorization:key=AIzaSyB3H6K1nz3ZqyxNrNMLIllcoh1c23PO2fA'
+            'Authorization:key=AIzaSyADEYyTtAk7EhvW9ZUVhw2jNj8VXxWdCB0'
         ));
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($json));
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
