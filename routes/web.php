@@ -115,6 +115,9 @@ Route::group(['middleware' => 'auth'], function()
 			Route::get('api/apotek/racik/{token}','ApotekController@racikApi');
 			Route::get('webview/apotek/racik/{token}','ApotekController@racikApiWebView');
 
+			//Route::get('api/apotek/racik/{id}/{token}','ApotekController@racikApi');
+			Route::post('webview/apotek/racik/{id}/{token}','ApotekController@racikApiWebViewUpdate');
+
 			Route::get('api/apotek/resep/selesai/{id}/{token}','ApotekController@selesaiApi');
 			Route::get('webview/apotek/resep/selesai/{id}/{token}','ApotekController@selesaiApiWebView');
 
@@ -129,4 +132,4 @@ Route::group(['middleware' => 'auth'], function()
 
 	Route::get('api/logout/{token}','HomeController@logoutApi');
 
-	Route::get('coba','DokterController@cek');	
+	Route::get('coba','ApotekController@cek');	

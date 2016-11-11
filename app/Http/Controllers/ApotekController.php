@@ -11,6 +11,46 @@ use App\History;
 
 class ApotekController extends Controller
 {
+
+private function alertpasien($token,$role,$message){
+              $notif = array
+            (
+                'tag'   => $role,
+                'title'     => "NOTIFICATION!!!",
+                'body'  => $message,
+            );
+
+              $data = array
+            (
+                'tag'   => $role,
+                'title'     => "NOTIFICATION!!!",
+                'body'  => $message,
+            );
+
+
+            $json=array(
+                'data'  => $data,
+                'notification'  => $notif,
+                'to'    => $token,
+                'priority' => 'high',
+                'time_to_live' => 86400,
+            );
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'Content-Length: '.strlen(json_encode($json)),
+                'Authorization:key=AIzaSyADEYyTtAk7EhvW9ZUVhw2jNj8VXxWdCB0'
+            ));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($json));
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $output = curl_exec($ch);
+            curl_close($ch);
+            // echo $output;
+    }
+
     public function home() {     
         if(Auth::check() && Auth::user()->role_id == 4) {
         	$transactions = Transaction::where('drugstore_id',Auth::user()->id)->where('status_id','=','1')->orderBy('id','DESC')->get();
@@ -106,11 +146,19 @@ class ApotekController extends Controller
                 else
                 {
                     $data = Input::all();
-                    $id = Transaction::where('id',$id)->update(array(
+                    $trans = Transaction::where('id',$id)->update(array(
                         'cost'          => $data['cost'],
                         'duration'      => $data['duration'],
                         'status_id'     => 3
                     ));
+
+                        $transaction = Transaction::find($id);
+                        $harga = $transaction->cost;
+                        $durasi = $transaction->duration;
+                        $token_fcm = $transaction->user->token_fcm;
+
+                        $this->alertpasien($token_fcm,"2","Resep diracik , bisa diambil $durasi jam lagi, Harga $harga.");
+
                     return redirect('webview/apotek/resep/'.$token);
                 }
             }
@@ -124,13 +172,14 @@ class ApotekController extends Controller
 	        	if(Request::isMethod('get'))
 	        	{
 		        	$transaction = Transaction::find($id);
-		        	$update = Transaction::where('id',$id)->update(array(
-						'status_id'		=> 2
-					));
+		   //      	$update = Transaction::where('id',$id)->update(array(
+					// 	'status_id'		=> 2
+					// ));
 					if ($update) {
 			            $res = array(
 		                        'status'        => 'success'
 		                    );
+
 		                return json_encode($res);
 					}
 					else
@@ -153,6 +202,7 @@ class ApotekController extends Controller
 			            $res = array(
 		                        'status'        => 'success'
 		                    );
+                        
 		                return json_encode($res);
 					}
 					else
@@ -180,6 +230,25 @@ class ApotekController extends Controller
                 if($user->role_id == 4) {
                 	$transactions = Transaction::where('drugstore_id',$user->id)->where('status_id','=','3')->orderBy('updated_at','DESC')->get();
                     return view('apotek.resep.racikWebView',compact('transactions'));
+                }
+            }    
+    }
+
+    public function racikApiWebViewUpdate($id,$token) { 
+        if ($user = User::where('remember_token',$token)->first()) {
+                if($user->role_id == 4) {
+                    $data = Input::all();
+                    $trans = Transaction::where('id',$id)->update(array(
+                        'cost'          => $data['cost'],
+                        'duration'      => $data['duration'],
+                    ));
+                    $transaction = Transaction::find($id);
+                    $harga = $transaction->cost;
+                    $durasi = $transaction->duration;
+                    $token_fcm = $transaction->user->token_fcm;
+
+                    $this->alertpasien($token_fcm,"2","Harga Berubah. Bisa diambil $durasi jam lagi, Harga $harga.");
+                    return redirect('webview/apotek/racik/'.$token);
                 }
             }    
     }
@@ -249,9 +318,15 @@ class ApotekController extends Controller
                 if(Request::isMethod('get'))
                 {
                     $transaction = Transaction::find($id);
-                    $id = Transaction::where('id',$id)->update(array(
+                    $trans = Transaction::where('id',$id)->update(array(
                         'status_id'     => 4
                     ));
+                        $transaction = Transaction::find($id);
+                        $harga = $transaction->cost;
+                        $token_fcm = $transaction->user->token_fcm;
+
+                        $this->alertpasien($token_fcm,"2","Resep sudah jadi!! Silahkan ambil sekarang.");
+
                     return redirect('webview/apotek/racik/'.$token);
                 }
             }

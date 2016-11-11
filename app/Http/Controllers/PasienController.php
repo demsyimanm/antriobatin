@@ -186,7 +186,7 @@ class PasienController extends Controller
 
     public function historyByIdApi($id,$token) {     
         if ($user = User::where('remember_token',$token)->first()) {
-            if($user->role_id == 2) {
+            if($user->role_id == 2 or $user->role_id == 3) {
                 $histories = History::where('id',$id)->get();
                 $history_arr = array();
                     foreach ($histories as $history) {

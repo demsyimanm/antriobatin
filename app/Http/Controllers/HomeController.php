@@ -6,6 +6,8 @@ use Input;
 use Session;
 use App\User;
 use DNS2D;
+use App\Role;
+use App\Status;
 class HomeController extends Controller
 {
     protected $data = array();
@@ -21,6 +23,111 @@ class HomeController extends Controller
     }
 
     public function login() {
+        /*Role::create(array(
+            'id'    => 1,
+            'name'  => 'Admin'
+        ));
+
+        Role::create(array(
+            'id'    => 2,
+            'name'  => 'Pasien'
+        ));
+
+        Role::create(array(
+            'id'    => 3,
+            'name'  => 'Dokter'
+        ));
+
+        Role::create(array(
+            'id'    => 4,
+            'name'  => 'Apotek'
+        ));
+
+        Role::create(array(
+            'id'    => 5,
+            'name'  => 'Dinas Kesehatan'
+        ));
+
+         Status::create(array(
+            'id'    => 1,
+            'name'  => 'Dikirim ke Apotek'
+        ));
+
+        Status::create(array(
+            'id'    => 2,
+            'name'  => 'Diterima Apotek'
+        ));
+
+        Status::create(array(
+            'id'    => 3,
+            'name'  => 'Sedang dalam proses peracikan obat'
+        ));
+
+        Status::create(array(
+            'id'    => 4,
+            'name'  => 'Obat sudah bisa diambil'
+        ));
+
+        Status::create(array(
+            'id'    => 5,
+            'name'  => 'Obat telah diambil'
+        ));
+
+         User::insertGetId(array(
+            'name'      => 'Admin', 
+            'username'  => 'admin@gmail.com', 
+            'password'  => bcrypt('admin'), 
+            'telp'      => '085607227007', 
+            'nip'       => '5113100081',
+            'barcode'   => '',
+            'address'   => 'Teknik Informatika ITS',
+            'role_id'   => 1
+        ));
+
+        User::insertGetId(array(
+            'name'      => 'Pasien', 
+            'username'  => 'pasien@gmail.com', 
+            'password'  => bcrypt('pasien'), 
+            'telp'      => '085607227007', 
+            'nip'       => '5113100046',
+            'barcode'   => '',
+            'address'   => 'Keputih',
+            'role_id'   => 2
+        ));
+
+        User::insertGetId(array(
+            'name'      => 'Dokter', 
+            'username'  => 'dokter@gmail.com', 
+            'password'  => bcrypt('dokter'), 
+            'telp'      => '085607227007', 
+            'nip'       => '5113100015',
+            'barcode'   => '',
+            'address'   => 'Wisma Permai Gg 3 no 3',
+            'role_id'   => 3
+        ));
+
+        User::insertGetId(array(
+            'name'      => 'Apotek', 
+            'username'  => 'apotek@gmail.com', 
+            'password'  => bcrypt('apotek'), 
+            'telp'      => '085607227007', 
+            'nip'       => '5113100300',
+            'barcode'   => '',
+            'address'   => 'Apotek Keputih Sukolilo',
+            'role_id'   => 4
+        ));
+
+        User::insertGetId(array(
+            'name'      => 'Dinas Kesehatan', 
+            'username'  => 'dinas@gmail.com', 
+            'password'  => bcrypt('dinas'), 
+            'telp'      => '085607227007', 
+            'nip'       => '5113100081',
+            'barcode'   => '',
+            'address'   => 'Dinas Kesehatan Surabaya',
+            'role_id'   => 5
+        ));*/
+
         if (Request::isMethod('post')) {
             $credentials = Input::only('username','password');
             $this->data['username'] = Input::get('username');

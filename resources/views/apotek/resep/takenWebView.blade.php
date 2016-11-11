@@ -6,7 +6,7 @@
 	<div style="padding-top:3%; padding bottom:0px; padding-top:0px">
 	  <h1 class="ui dividing header" style="text-align:center">
 	  	<div class="content" style="text-align:center">
-	    	Resep Bisa Diambil
+	    	Resep Sudah Diambil
 	  	</div>
 	  </h1>
 	</div>
@@ -14,6 +14,7 @@
 
 		<table class="ui celled table segment table-hover" id="matkul">
 		  <tbody>
+		  <?php $i = 0;?>
 		    @foreach ($transactions as $transaction)
 			    <tr>
 		      		<td>Dokter : <b>{{ $transaction->dokter->name }}</td></b>
@@ -24,7 +25,12 @@
 		      		<td>Biaya : <b>{{ $transaction->cost }}</td></b>
 		      		<td>Durasi : <b>{{ $transaction->duration }} jam</td></b>
 			    </tr>
+			    <?php $i++;?>
 		    @endforeach
+		    @if($i==0)
+		    	<br>
+		    	<center><span class="center" style="text-align:center">Data Kosong</span></center><span style="text-align:center">Data Kosong</span>
+		    @endif
 		  </tbody>
 		</table>
   </div>

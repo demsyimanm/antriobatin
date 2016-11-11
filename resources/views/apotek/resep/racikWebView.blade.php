@@ -14,6 +14,7 @@
 
 		<table class="ui celled table segment table-hover" id="matkul">
 		  <tbody>
+		  	<?php $i = 0;?>
 		    @foreach ($transactions as $transaction)
 			    <tr>
 		      		<td>Dokter : <b>{{ $transaction->dokter->name }}</td></b>
@@ -21,8 +22,18 @@
 		      		<td>Resep :</td></b>
 		      		<td style="text-align:center"><img src="data:image/png;base64,<?php echo $transaction->photo?>" style="width:100%"> </td></b>
 		      		<td >Catatan : <b><?php echo nl2br($transaction->message) ?></td></b>
-		      		<td>Biaya : <b>{{ $transaction->cost }}</td></b>
-		      		<td>Durasi : <b>{{ $transaction->duration }} jam</td></b> 
+		      		<form class="ui form" action="{{url('webview/apotek/racik/'.$transaction->id.'/'.$transaction->apotek->remember_token)}}" method="post">
+			      		<td>Biaya : <input name="cost" value="{{ $transaction->cost }}" type="number"></td>
+			      		<td>Durasi : <input name="duration" value="{{ $transaction->duration }}"  type="number"> jam</td></b> 
+		      		
+			      		<td class="center" style="">
+					      	<center>
+						      	<button class="ui icon green button" type="submit">
+						        	Update
+						      	</button>
+					      	</center>
+				      	</td>
+			      	</form>
 		      		<td class="center" style="">
 				      	<center>
 					      	<a class="ui icon red button" href="{{ URL::to('webview/apotek/resep/selesai/'. $transaction->id.'/'.$transaction->apotek->remember_token) }}">
@@ -31,7 +42,12 @@
 				      	</center>
 			      	</td>
 			    </tr>
+			    <?php $i++;?>
 		    @endforeach
+		    @if($i==0)
+		    	<br>
+		    	<center><span class="center" style="text-align:center">Data Kosong</span></center>
+		    @endif
 		  </tbody>
 		</table>
   </div>

@@ -14,6 +14,7 @@
 
 		<table class="ui celled table segment table-hover" id="matkul">
 		  <tbody>
+		  <?php $i = 0;?>
 		  	@foreach ($transactions as $transaction)
 			    <tr>
 		      		<td>Dokter : <b>{{ $transaction->dokter->name }}</b></td>
@@ -28,7 +29,12 @@
 				      	</center>
 			      	</td>
 			    </tr>
+			    <?php $i++;?>
 		    @endforeach
+		    @if($i==0)
+		    	<br>
+		    	<center><span class="center" style="text-align:center">Data Kosong</span></center>
+		    @endif
 		  </tbody>
 		</table>
   </div>

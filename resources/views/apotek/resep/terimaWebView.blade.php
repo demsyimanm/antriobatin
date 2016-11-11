@@ -22,7 +22,7 @@
               <div class="sixteen wide field">
                    <label>Resep</label>
                   <div class="fourteen wide field">
-                    <center><img src="data:image/png;base64,<?php echo $transaction->photo?>" style="width:150%"/></center>
+                    <center><img src="data:image/png;base64,<?php echo $transaction->photo?>" style="width:110%"/></center>
                   </div>
               </div>
               <div class="sixteen wide field">
